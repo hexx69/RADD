@@ -29,7 +29,6 @@ if (missing.length) {
 
 const info = {
   name: "RADD",
-  builtAt: new Date().toISOString(),
   engineFiles: requiredEngineFiles
 };
 

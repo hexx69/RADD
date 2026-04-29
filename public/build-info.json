@@ -1,6 +1,5 @@
 {
   "name": "RADD",
-  "builtAt": "2026-04-29T21:18:30.020Z",
   "engineFiles": [
     "index.js",
     "index.wasm",

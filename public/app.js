@@ -65,16 +65,25 @@ function setStatus(text) {
 }
 
 function saveSettings() {
-  localStorage.setItem("radd.playerName", playerName.value.trim() || "RADD Player");
+  localStorage.setItem("radd.playerName", sanitizePlayerName(playerName.value));
   localStorage.setItem("radd.renderer", vidSelectBox.value);
   localStorage.setItem("radd.touch", touchCheckBox.checked ? "1" : "0");
   localStorage.setItem("radd.proxyUrl", proxyUrl.value.trim());
   localStorage.setItem("radd.serverAddress", serverAddress.value.trim());
 }
 
+function sanitizePlayerName(name) {
+  return (name || "RADD_Player")
+    .trim()
+    .replace(/\s+/g, "_")
+    .replace(/[^A-Za-z0-9_^-]/g, "")
+    .slice(0, 24) || "RADD_Player";
+}
+
 function updateFileCount() {
   const count = Object.keys(pakDict).length;
   fileCount.textContent = count === 0 ? "No local files selected" : `${count} file${count === 1 ? "" : "s"} ready`;
+  setButtons();
 }
 
 function printText(text) {
@@ -149,8 +158,8 @@ async function ensureJSZip() {
   jsZipLoaded = true;
 }
 
-async function useDemo() {
-  bootMode = "solo";
+async function useDemo(mode = bootMode) {
+  bootMode = mode;
   saveSettings();
   showStage("Restoring cached demo...");
 
@@ -169,7 +178,7 @@ async function useDemo() {
     const zip = await JSZip.loadAsync(zipBlob);
     if (!zip.files[DEMO_PAK_PATH]) throw new Error("Demo PAK was not found in the archive.");
     pakDict[DEMO_PAK_NAME] = await zip.files[DEMO_PAK_PATH].async("uint8array");
-    startGame();
+    startGame(bootMode);
   } catch (error) {
     window.alert(`Please supply PAK file(s) manually. ${error.message}`);
     stage.hidden = true;
@@ -179,7 +188,9 @@ async function useDemo() {
 }
 
 function buildArguments() {
-  const args = ["+set", "name", playerName.value.trim() || "RADD Player"];
+  const safeName = sanitizePlayerName(playerName.value);
+  playerName.value = safeName;
+  const args = ["+set", "name", safeName];
   const renderer = vidSelectBox.value;
 
   if (renderer) {
@@ -359,6 +370,10 @@ async function maybeLoadTouchControls() {
 async function startGame(mode = bootMode) {
   if (engineStarted) return;
   bootMode = mode;
+  if (Object.keys(pakDict).length < 1) {
+    await useDemo();
+    return;
+  }
   engineStarted = true;
   saveSettings();
   showStage("Starting RADD...");
@@ -400,7 +415,7 @@ dropZone.addEventListener("drop", async (event) => {
 
 soloButton.addEventListener("click", () => startGame("solo"));
 multiButton.addEventListener("click", () => startGame("multiplayer"));
-demoButton.addEventListener("click", useDemo);
+demoButton.addEventListener("click", () => useDemo("solo"));
 
 fullscreenButton.addEventListener("click", () => {
   const target = canvasElement.style.display === "block" ? canvasElement : stage;

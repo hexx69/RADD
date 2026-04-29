@@ -23,8 +23,8 @@
           <div class="intro">
             <h2>Drop in, load fast, connect clean.</h2>
             <p>
-              RADD wraps the Qwasm2 engine in a Vercel-ready launcher with local PAK loading,
-              renderer controls, persistent settings, and a multiplayer profile for WebSocket proxy setups.
+              RADD wraps the Qwasm2 engine in a Vercel-ready launcher with demo boot,
+              local PAK loading, persistent settings, and a multiplayer profile for WebSocket proxy setups.
             </p>
             <div class="actions">
               <button class="primary" id="soloButton" type="button" disabled>Start solo</button>
@@ -50,7 +50,7 @@
         <article class="panel">
           <div class="panel-heading">
             <h3>Game Data</h3>
-            <p>Use legally owned PAK files, or fetch the original demo archive.</p>
+            <p>Use legally owned PAK files, or let RADD fetch the original demo archive.</p>
           </div>
           <label class="drop-zone" id="dropZone" for="pakFiles">
             <input type="file" id="pakFiles" multiple accept=".pak,.pk3,.zip">
@@ -58,7 +58,7 @@
             <small id="fileCount">No local files selected</small>
           </label>
           <div class="row">
-            <button class="ghost" id="demoButton" type="button" disabled>Use demo</button>
+            <button class="ghost" id="demoButton" type="button" disabled>Load demo now</button>
             <button class="ghost" id="resetButton" type="button">Clear files</button>
           </div>
           <label class="check">
@@ -74,7 +74,7 @@
           </div>
           <label>
             Player name
-            <input id="playerName" type="text" maxlength="24" value="RADD Player" autocomplete="nickname">
+            <input id="playerName" type="text" maxlength="24" value="RADD_Player" autocomplete="nickname">
           </label>
           <label>
             Video driver
