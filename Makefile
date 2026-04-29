@@ -80,6 +80,7 @@ ifdef EMSCRIPTEN
 GL4ES_PATH ?= /home/user/gl4es_pic
 WITH_CURL := no
 WITH_OPENAL := no
+WASM_PROXY_SOCKETS ?= no
 endif
 
 # ----------
@@ -589,6 +590,10 @@ endif
 
 ifeq ($(YQ2_OSTYPE), Emscripten)
 release/index.html : CFLAGS += -fPIC
+ifeq ($(WASM_PROXY_SOCKETS),yes)
+release/index.html : CFLAGS += -pthread
+release/index.html : LDFLAGS += -pthread -lwebsocket.js -sPROXY_POSIX_SOCKETS -sPROXY_TO_PTHREAD
+endif
 release/index.html : LDFLAGS += -sFULL_ES2=1 -sFULL_ES3=1 -sMIN_WEBGL_VERSION=1 -sMAX_WEBGL_VERSION=2 -sMAIN_MODULE=2 \
                                  -sINITIAL_MEMORY=128MB -sTOTAL_STACK=4MB -sALLOW_MEMORY_GROWTH \
                                  --shell-file wasm/shell.html --preload-file=wasm/baseq2@/baseq2 \

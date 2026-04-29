@@ -1,0 +1,16 @@
+{
+  "name": "RADD",
+  "builtAt": "2026-04-29T21:18:30.020Z",
+  "engineFiles": [
+    "index.js",
+    "index.wasm",
+    "index.data",
+    "game_baseq2.wasm",
+    "ref_soft.wasm",
+    "ref_gl1.wasm",
+    "ref_gles3.wasm",
+    "jszip.min.js",
+    "oly.js",
+    "license.txt"
+  ]
+}

@@ -1,0 +1,9 @@
+node_modules/
+.vercel/
+dist/
+build/
+release/
+.DS_Store
+npm-debug.log*
+*.tgz
+.vercel

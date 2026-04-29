@@ -1,5 +1,56 @@
-Qwasm2
-======
+RADD
+====
+
+RADD is a Vercel-ready browser FPS launcher built on the Qwasm2 WebAssembly
+engine. It adds a modern launch interface, local PAK loading, a demo helper,
+renderer/touch/player settings, and a multiplayer connection panel for
+WebSocket proxy deployments.
+
+## Quick Start
+
+```sh
+npm install
+npm run dev
+```
+
+Open the printed local URL and confirm mature-content access to enable the
+launch buttons. You can either provide legally owned `.pak` files or use the
+demo helper, which downloads the original demo archive and extracts `pak0.pak`
+in the browser.
+
+## Vercel
+
+```sh
+npm run build
+vercel link
+vercel --prod
+```
+
+The deployment output is `public/`. Vercel headers in `vercel.json` set the
+WASM MIME type, long-lived cache headers for engine assets, and cross-origin
+isolation headers required by threaded Emscripten multiplayer builds.
+
+## Multiplayer Setup
+
+Browser clients cannot open native Quake II sockets directly. For live
+multiplayer, run the Quake II dedicated server and an Emscripten
+WebSocket-to-POSIX proxy outside Vercel, then enter those values in the RADD
+Multiplayer panel.
+
+The checked-in engine bundle is suitable for solo/demo play. Rebuild the engine
+for live multiplayer sockets with:
+
+```sh
+emmake make GL4ES_PATH=/path/to/gl4es_pic WASM_PROXY_SOCKETS=yes
+npm run sync:engine
+npm run build
+```
+
+See [docs/multiplayer-vercel.md](docs/multiplayer-vercel.md) for the deployment
+shape and operational notes.
+
+Qwasm2 Engine Notes
+===================
 
 This is an unofficial WebAssembly port of the engine behind the 3D first-person shooter *Quake 2*.
 

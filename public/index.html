@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="RADD, a modern browser launcher for a WebAssembly FPS engine with single player and multiplayer setup controls.">
+    <title>RADD</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%23ff3d5d'/%3E%3Cpath d='M18 47V17h17c7 0 12 4 12 11 0 5-3 8-7 10l8 9H36l-7-8h-2v8H18Zm9-16h7c3 0 5-1 5-4s-2-4-5-4h-7v8Z' fill='white'/%3E%3C/svg%3E">
+    <link rel="stylesheet" href="/styles.css">
+  </head>
+  <body>
+    <main class="shell" id="launcher">
+      <section class="hero">
+        <div class="brand">
+          <span class="brand-mark" aria-hidden="true"></span>
+          <div>
+            <p class="overline">WebAssembly FPS</p>
+            <h1>RADD</h1>
+          </div>
+        </div>
+
+        <div class="hero-grid">
+          <div class="intro">
+            <h2>Drop in, load fast, connect clean.</h2>
+            <p>
+              RADD wraps the Qwasm2 engine in a Vercel-ready launcher with local PAK loading,
+              renderer controls, persistent settings, and a multiplayer profile for WebSocket proxy setups.
+            </p>
+            <div class="actions">
+              <button class="primary" id="soloButton" type="button" disabled>Start solo</button>
+              <button class="secondary" id="multiButton" type="button" disabled>Join server</button>
+            </div>
+          </div>
+
+          <div class="radar-card" aria-hidden="true">
+            <div class="radar">
+              <span></span>
+              <i></i>
+            </div>
+            <div class="telemetry">
+              <span>WebGL 2</span>
+              <span>WASM</span>
+              <span>Proxy MP</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="control-grid">
+        <article class="panel">
+          <div class="panel-heading">
+            <h3>Game Data</h3>
+            <p>Use legally owned PAK files, or fetch the original demo archive.</p>
+          </div>
+          <label class="drop-zone" id="dropZone" for="pakFiles">
+            <input type="file" id="pakFiles" multiple accept=".pak,.pk3,.zip">
+            <span>Drop PAK files here</span>
+            <small id="fileCount">No local files selected</small>
+          </label>
+          <div class="row">
+            <button class="ghost" id="demoButton" type="button" disabled>Use demo</button>
+            <button class="ghost" id="resetButton" type="button">Clear files</button>
+          </div>
+          <label class="check">
+            <input type="checkbox" id="ageCheckBox">
+            <span>I confirm I can play mature FPS content.</span>
+          </label>
+        </article>
+
+        <article class="panel">
+          <div class="panel-heading">
+            <h3>Session</h3>
+            <p>Choose how RADD starts the engine.</p>
+          </div>
+          <label>
+            Player name
+            <input id="playerName" type="text" maxlength="24" value="RADD Player" autocomplete="nickname">
+          </label>
+          <label>
+            Video driver
+            <select id="vidSelectBox">
+              <option value="">Use saved config</option>
+              <option value="gles3">OpenGL ES 3.x / WebGL 2</option>
+              <option value="gl1">OpenGL 1.x / WebGL 1</option>
+              <option value="soft">Software renderer</option>
+            </select>
+          </label>
+          <label class="check">
+            <input type="checkbox" id="touchCheckBox">
+            <span>Enable touchscreen controls</span>
+          </label>
+        </article>
+
+        <article class="panel wide">
+          <div class="panel-heading">
+            <h3>Multiplayer</h3>
+            <p>Browser networking needs an Emscripten WebSocket-to-POSIX proxy in front of a Quake II server.</p>
+          </div>
+          <div class="multi-form">
+            <label>
+              WebSocket proxy
+              <input id="proxyUrl" type="url" placeholder="wss://proxy.example.com:8080">
+            </label>
+            <label>
+              Server address
+              <input id="serverAddress" type="text" placeholder="q2.example.com:27910">
+            </label>
+          </div>
+          <div class="hint">
+            This launcher passes the proxy URL to Emscripten and starts the client with
+            <code>+connect</code>. The checked-in engine runs solo immediately; rebuild with
+            <code>WASM_PROXY_SOCKETS=yes</code> for live multiplayer sockets.
+          </div>
+        </article>
+      </section>
+    </main>
+
+    <section class="stage" id="stage" hidden>
+      <div class="topbar">
+        <div class="brand mini"><span class="brand-mark" aria-hidden="true"></span><strong>RADD</strong></div>
+        <div class="stage-actions">
+          <button class="ghost" id="consoleButton" type="button">Console</button>
+          <button class="ghost" id="fullscreenButton" type="button">Fullscreen</button>
+        </div>
+      </div>
+      <div class="loader" id="statusPanel">
+        <div class="loader-ring" aria-hidden="true"></div>
+        <div>
+          <strong id="status">Starting...</strong>
+          <progress value="0" max="100" id="progress" hidden></progress>
+        </div>
+      </div>
+      <textarea id="output" readonly aria-label="Game console"></textarea>
+      <canvas id="canvas" oncontextmenu="event.preventDefault()" tabindex="-1"></canvas>
+      <a id="exportFile" hidden></a>
+    </section>
+
+    <script src="/app.js"></script>
+  </body>
+</html>

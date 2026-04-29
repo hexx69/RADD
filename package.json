@@ -1,0 +1,16 @@
+{
+  "name": "radd",
+  "version": "1.0.0",
+  "private": true,
+  "description": "RADD browser FPS launcher for the Qwasm2 WebAssembly engine.",
+  "scripts": {
+    "build": "node scripts/prepare-vercel.js",
+    "dev": "vite public --host 0.0.0.0",
+    "preview": "vite preview --host 0.0.0.0 --outDir public",
+    "sync:engine": "node scripts/sync-engine-from-release.js",
+    "check": "npm run build"
+  },
+  "devDependencies": {
+    "vite": "^7.1.12"
+  }
+}
