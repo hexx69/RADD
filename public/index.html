@@ -21,10 +21,10 @@
 
         <div class="hero-grid">
           <div class="intro">
-            <h2>Drop in, load fast, connect clean.</h2>
+            <h2>Boot the arena from your browser.</h2>
             <p>
-              RADD wraps the Qwasm2 engine in a Vercel-ready launcher with demo boot,
-              local PAK loading, persistent settings, and a multiplayer profile for WebSocket proxy setups.
+              A dark Quake II-style web client with demo boot, local PAK loading,
+              persistent setup, and multiplayer launch controls.
             </p>
             <div class="actions">
               <button class="primary" id="soloButton" type="button" disabled>Start solo</button>
@@ -32,14 +32,19 @@
             </div>
           </div>
 
-          <div class="radar-card" aria-hidden="true">
-            <div class="radar">
-              <span></span>
-              <i></i>
+          <div class="arena-card" aria-hidden="true">
+            <div class="arena-screen">
+              <span class="crosshair"></span>
+              <span class="scanline"></span>
+              <div class="arena-corridor">
+                <span></span>
+                <i></i>
+                <b></b>
+              </div>
             </div>
             <div class="telemetry">
-              <span>WebGL 2</span>
-              <span>WASM</span>
+              <span>WebGL</span>
+              <span>Local PAK</span>
               <span>Proxy MP</span>
             </div>
           </div>
